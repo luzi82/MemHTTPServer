@@ -16,6 +16,7 @@ class MapHTTPServer(BaseHTTPServer.HTTPServer):
 
 
 class MapHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    """HTTPRequestHandler for MapHTTPServer"""
 
     def do_GET(self): # pylint: disable-msg=C0103
         if not self.path in self.server.path_to_output:
