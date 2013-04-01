@@ -51,6 +51,35 @@ class TestMapHTTPServer(unittest.TestCase):
         response = client.getresponse()
         
         self.assertEqual(404, response.status)
+        
+    def test_change(self):
+
+        PORT = TestMapHTTPServer.PORT
+        
+        server = MapHTTPServer(('localhost',PORT))
+        server.set_GET('asdf', 'text/html', 'ASDF')
+        
+        server.server_activate()
+
+        client = HTTPConnection('localhost',PORT)
+        client.connect()
+        client.request('GET', 'asdf')
+        server.handle_request()
+        response = client.getresponse()
+        
+        self.assertEqual(200, response.status)
+        self.assertEqual('ASDF', response.read())
+        self.assertEqual('text/html', response.getheader('Content-type'))
+
+        server.set_GET('asdf', 'text/plain', 'QWER')
+
+        client.request('GET', 'asdf')
+        server.handle_request()
+        response = client.getresponse()
+
+        self.assertEqual(200, response.status)
+        self.assertEqual('QWER', response.read())
+        self.assertEqual('text/plain', response.getheader('Content-type'))
 
 if __name__ == '__main__':
     unittest.main()
