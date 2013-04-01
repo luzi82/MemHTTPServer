@@ -2,6 +2,23 @@ import BaseHTTPServer
 
 
 class MemHTTPServer(BaseHTTPServer.HTTPServer):
+    """
+    Simple HTTPServer
+
+    >>> import httplib
+    >>> server = MemHTTPServer(('', 10080))
+    >>> server.set_get_output('path', 'text/html', 'content')
+    >>> server.server_activate()
+    >>> client = httplib.HTTPConnection('localhost', 10080)
+    >>> client.connect()
+    >>> client.request('GET', 'path')
+    >>> server.handle_request()
+    >>> response = client.getresponse()
+    >>> print response.getheader('Content-type')
+    text/html
+    >>> print response.read()
+    content
+    """
 
     def __init__(self, server_address):
         BaseHTTPServer.HTTPServer.__init__(self, server_address,
@@ -16,9 +33,14 @@ class MemHTTPServer(BaseHTTPServer.HTTPServer):
 
 
 class MemHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    """HTTPRequestHandler for MemHTTPServer"""
+    """
+    HTTPRequestHandler for MemHTTPServer
+    Don't use it in other HTTPServer
+    """
 
     def do_GET(self): # pylint: disable-msg=C0103
+        """Override BaseHTTPRequestHandler.do_GET"""
+        
         if not self.path in self.server.path_to_output:
             self.send_error(404)
             return
@@ -28,3 +50,7 @@ class MemHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(entry['content'])
         self.wfile.close()
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
