@@ -1,11 +1,11 @@
 import BaseHTTPServer
 
 
-class MapHTTPServer(BaseHTTPServer.HTTPServer):
+class MemHTTPServer(BaseHTTPServer.HTTPServer):
 
     def __init__(self, server_address):
         BaseHTTPServer.HTTPServer.__init__(self, server_address,
-                                           MapHTTPRequestHandler)
+                                           MemHTTPRequestHandler)
         self.path_to_output = {}
 
     def set_get_output(self, path, content_type, content):
@@ -15,8 +15,8 @@ class MapHTTPServer(BaseHTTPServer.HTTPServer):
         }
 
 
-class MapHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    """HTTPRequestHandler for MapHTTPServer"""
+class MemHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+    """HTTPRequestHandler for MemHTTPServer"""
 
     def do_GET(self): # pylint: disable-msg=C0103
         if not self.path in self.server.path_to_output:

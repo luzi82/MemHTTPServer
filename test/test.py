@@ -1,17 +1,17 @@
 import unittest
-from maphttpserver import MapHTTPServer
+from memhttpserver import MemHTTPServer
 from httplib import HTTPConnection
 
 
-class TestMapHTTPServer(unittest.TestCase):
+class TestMemHTTPServer(unittest.TestCase):
 
     PORT = 10080
 
     def test_get(self):
 
-        PORT = TestMapHTTPServer.PORT
+        PORT = TestMemHTTPServer.PORT
 
-        server = MapHTTPServer(('localhost', PORT))
+        server = MemHTTPServer(('localhost', PORT))
         server.set_get_output('asdf', 'text/html', 'ASDF')
         server.set_get_output('qwer', 'text/plain', 'QWER')
 
@@ -39,9 +39,9 @@ class TestMapHTTPServer(unittest.TestCase):
 
     def test_404(self):
 
-        PORT = TestMapHTTPServer.PORT
+        PORT = TestMemHTTPServer.PORT
 
-        server = MapHTTPServer(('localhost', PORT))
+        server = MemHTTPServer(('localhost', PORT))
 
         server.server_activate()
 
@@ -55,9 +55,9 @@ class TestMapHTTPServer(unittest.TestCase):
 
     def test_change(self):
 
-        PORT = TestMapHTTPServer.PORT
+        PORT = TestMemHTTPServer.PORT
 
-        server = MapHTTPServer(('localhost', PORT))
+        server = MemHTTPServer(('localhost', PORT))
         server.set_get_output('asdf', 'text/html', 'ASDF')
 
         server.server_activate()
