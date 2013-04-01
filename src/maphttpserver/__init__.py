@@ -1,16 +1,19 @@
 import BaseHTTPServer
 
+
 class MapHTTPServer(BaseHTTPServer.HTTPServer):
-    
-    def __init__(self,server_address):
-        BaseHTTPServer.HTTPServer.__init__(self,server_address,MapHTTPRequestHandler)
+
+    def __init__(self, server_address):
+        BaseHTTPServer.HTTPServer.__init__(self, server_address,
+                                           MapHTTPRequestHandler)
         self.GET_map = {}
 
-    def set_GET(self,path,content_type,content):
-        self.GET_map[path]={
-            'content_type':content_type,
-            'content':content
+    def set_GET(self, path, content_type, content):
+        self.GET_map[path] = {
+            'content_type': content_type,
+            'content': content
         }
+
 
 class MapHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
