@@ -6,10 +6,10 @@ class MapHTTPServer(BaseHTTPServer.HTTPServer):
     def __init__(self, server_address):
         BaseHTTPServer.HTTPServer.__init__(self, server_address,
                                            MapHTTPRequestHandler)
-        self.GET_map = {}
+        self.path_to_output = {}
 
-    def set_GET(self, path, content_type, content):
-        self.GET_map[path] = {
+    def set_get_output(self, path, content_type, content):
+        self.path_to_output[path] = {
             'content_type': content_type,
             'content': content
         }
@@ -17,11 +17,11 @@ class MapHTTPServer(BaseHTTPServer.HTTPServer):
 
 class MapHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
-    def do_GET(self):
-        if not self.path in self.server.GET_map:
+    def do_GET(self): # pylint: disable-msg=C0103
+        if not self.path in self.server.path_to_output:
             self.send_error(404)
             return
-        entry = self.server.GET_map[self.path]
+        entry = self.server.path_to_output[self.path]
         self.send_response(200)
         self.send_header("Content-type", entry['content_type'])
         self.end_headers()

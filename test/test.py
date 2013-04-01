@@ -12,8 +12,8 @@ class TestMapHTTPServer(unittest.TestCase):
         PORT = TestMapHTTPServer.PORT
 
         server = MapHTTPServer(('localhost', PORT))
-        server.set_GET('asdf', 'text/html', 'ASDF')
-        server.set_GET('qwer', 'text/plain', 'QWER')
+        server.set_get_output('asdf', 'text/html', 'ASDF')
+        server.set_get_output('qwer', 'text/plain', 'QWER')
 
         server.server_activate()
 
@@ -58,7 +58,7 @@ class TestMapHTTPServer(unittest.TestCase):
         PORT = TestMapHTTPServer.PORT
 
         server = MapHTTPServer(('localhost', PORT))
-        server.set_GET('asdf', 'text/html', 'ASDF')
+        server.set_get_output('asdf', 'text/html', 'ASDF')
 
         server.server_activate()
 
@@ -72,7 +72,7 @@ class TestMapHTTPServer(unittest.TestCase):
         self.assertEqual('ASDF', response.read())
         self.assertEqual('text/html', response.getheader('Content-type'))
 
-        server.set_GET('asdf', 'text/plain', 'QWER')
+        server.set_get_output('asdf', 'text/plain', 'QWER')
 
         client.request('GET', 'asdf')
         server.handle_request()
