@@ -81,6 +81,16 @@ class TestMemHTTPServer(unittest.TestCase):
         self.assertEqual(200, response.status)
         self.assertEqual('QWER', response.read())
         self.assertEqual('text/plain', response.getheader('Content-type'))
+        
+    def test_timeout(self):
+        
+        PORT = TestMemHTTPServer.PORT
+
+        server = MemHTTPServer(('localhost', PORT))
+        server.timeout = 1
+
+        server.server_activate()
+        server.handle_request()
 
 if __name__ == '__main__':
     unittest.main()
