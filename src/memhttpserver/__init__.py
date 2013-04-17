@@ -25,10 +25,11 @@ class MemHTTPServer(BaseHTTPServer.HTTPServer):
                                            MemHTTPRequestHandler)
         self.path_to_output = {}
 
-    def set_get_output(self, path, content_type, content):
+    def set_get_output(self, path, content_type=None, content=None, status=200):
         self.path_to_output[path] = {
             'content_type': content_type,
-            'content': content
+            'content': content,
+            'status' : status
         }
 
 
@@ -45,10 +46,12 @@ class MemHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_error(404)
             return
         entry = self.server.path_to_output[self.path]
-        self.send_response(200)
-        self.send_header("Content-type", entry['content_type'])
+        self.send_response(entry['status'])
+        if entry['content_type'] != None:
+            self.send_header("Content-type", entry['content_type'])
         self.end_headers()
-        self.wfile.write(entry['content'])
+        if entry['content'] != None:
+            self.wfile.write(entry['content'])
         self.wfile.close()
 
 if __name__ == "__main__":
